@@ -1,0 +1,204 @@
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.AssemblyReference.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.SuggestedBindingRedirects.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.Form1.resources
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.Properties.Resources.resources
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.GenerateResource.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.CoreCompileInputs.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\SimConnect.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.exe.config
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.exe
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.pdb
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Common.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Features.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Options.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Primitives.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.FlightSimulator.SimConnect.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Newtonsoft.Json.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Buffers.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.IO.Pipelines.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Memory.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Numerics.Vectors.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Encodings.Web.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Json.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Channels.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.ValueTuple.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Common.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Features.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Options.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Primitives.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\Newtonsoft.Json.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Buffers.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.IO.Pipelines.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Memory.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Numerics.Vectors.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Encodings.Web.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Json.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Channels.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\bin\Debug\System.ValueTuple.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.CopyComplete
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.exe
+D:\Dev\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.pdb
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\SimConnect.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.exe.config
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.exe
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.pdb
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Common.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Features.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Options.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Primitives.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.FlightSimulator.SimConnect.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Newtonsoft.Json.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Buffers.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.IO.Pipelines.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Memory.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Numerics.Vectors.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Encodings.Web.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Json.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Channels.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.ValueTuple.dll
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Common.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Features.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Options.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Primitives.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\Newtonsoft.Json.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Buffers.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.IO.Pipelines.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Memory.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Numerics.Vectors.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Encodings.Web.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Json.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Channels.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\bin\Debug\System.ValueTuple.xml
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.AssemblyReference.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.SuggestedBindingRedirects.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.Form1.resources
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.Properties.Resources.resources
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.GenerateResource.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.CoreCompileInputs.cache
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.CopyComplete
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.exe
+D:\Dev\FlightSimBridge\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.pdb
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\SimConnect.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.exe.config
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.exe
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.pdb
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Common.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Features.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Options.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Primitives.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.FlightSimulator.SimConnect.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Newtonsoft.Json.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Buffers.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.IO.Pipelines.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Memory.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Numerics.Vectors.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Encodings.Web.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Json.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Channels.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.ValueTuple.dll
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Common.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Features.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Options.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Microsoft.Extensions.Primitives.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\Newtonsoft.Json.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Buffers.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.IO.Pipelines.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Memory.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Numerics.Vectors.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Encodings.Web.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Text.Json.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Channels.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\System.ValueTuple.xml
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.AssemblyReference.cache
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.SuggestedBindingRedirects.cache
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.Form1.resources
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.Properties.Resources.resources
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.GenerateResource.cache
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.CoreCompileInputs.cache
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.csproj.CopyComplete
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.exe
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.pdb
