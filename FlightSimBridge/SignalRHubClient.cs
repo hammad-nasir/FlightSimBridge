@@ -19,14 +19,22 @@ namespace FlightSimBridge
         {
             string jwtToken = token.Trim('"');
             Console.WriteLine($"Token received: {jwtToken}");
+
+            //connection = new HubConnectionBuilder()
+            //.WithUrl(hubUrl, options =>
+            //{
+            //    options.AccessTokenProvider = () => Task.FromResult(jwtToken);
+            //})
+            //.WithAutomaticReconnect()
+            //.Build();
+            var connectionUrl = $"http://localhost:5233/flightsimhub?access_token={jwtToken}";
+
             connection = new HubConnectionBuilder()
-            .WithUrl(hubUrl, options =>
-            {
-                options.AccessTokenProvider = () => Task.FromResult(jwtToken);
-            })
-            .WithAutomaticReconnect()
-            .Build();
-         
+                .WithUrl(connectionUrl)
+                .WithAutomaticReconnect()
+                .Build();
+
+
             connection.Closed += (exception) =>
             {
                 Console.WriteLine($"SignalR hub connection closed: {exception?.Message}");
