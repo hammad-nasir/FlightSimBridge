@@ -7,17 +7,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.FlightSimulator.SimConnect;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FlightSimBridge
 {
     public enum DEFINITIONS
     {
         Struct1,
+        ThrottleData
     }
 
     public enum DATA_REQUESTS
     {
         REQUEST_PLANE_INFO,
+        REQUEST_THROTTLE_DATA,
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
@@ -26,6 +29,11 @@ namespace FlightSimBridge
         public double Latitude;
         public double Longitude;
         public double Altitude;
+    }
+
+    public struct ThrottleData
+    {
+        public double Throttle;
     }
 
     public class SimConnectClient
@@ -57,6 +65,9 @@ namespace FlightSimBridge
                 simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LATITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LONGITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE ALTITUDE", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+                simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "GENERAL ENG THROTTLE LEVER POSITION:1", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
 
                 simconnect.RegisterDataDefineStruct<PlaneInfo>(DEFINITIONS.Struct1);
 
@@ -94,6 +105,22 @@ namespace FlightSimBridge
                 signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude);
 
                 Thread.Sleep(1000); // Request every second
+            }
+        }
+
+        public void SendThrottle(double throttle)
+        {
+            try
+            {
+                Console.WriteLine($"Throttle receive in SimConnectClient: {throttle}");
+                // Send the throttle value to Flight Simulator using SimConnect
+                simconnect.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle = throttle });
+
+                Console.WriteLine($"Throttle sent to Flight Simulator: {throttle}");
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending throttle to Flight Simulator: {ex.Message}");
             }
         }
 

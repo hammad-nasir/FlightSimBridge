@@ -11,7 +11,9 @@ namespace FlightSimBridge
     public class SignalRHubClient
     {
         private readonly HubConnection connection;
+        private SimConnectClient simConnectClient;
         public event Action<double> OnAltitudeReceived;
+        private double throttleValue;
 
         private string connectionId;
 
@@ -19,6 +21,8 @@ namespace FlightSimBridge
         {
             string jwtToken = token.Trim('"');
             Console.WriteLine($"Token received: {jwtToken}");
+
+            simConnectClient = new SimConnectClient(this);
 
             //connection = new HubConnectionBuilder()
             //.WithUrl(hubUrl, options =>
@@ -33,6 +37,13 @@ namespace FlightSimBridge
                 .WithUrl(connectionUrl)
                 .WithAutomaticReconnect()
                 .Build();
+
+            connection.On<double>("ReceiveThrottle", (throttle) =>
+            {
+                Console.WriteLine($"Received Throttle on FlightSimBridge: {throttle}");
+                simConnectClient.SendThrottle(throttle);
+
+            });
 
 
             connection.Closed += (exception) =>
@@ -64,6 +75,7 @@ namespace FlightSimBridge
                 Console.WriteLine($"Error sending altitude to hub: {ex.Message}");
             }
         }
+
 
         public async Task ConnectAsync()
         {
