@@ -42,7 +42,7 @@ namespace FlightSimBridge
                 //longitudeLabel.Text = $"Longitude: {planeInfo.Longitude} degrees";
                 altitudeLabel.Text = $"Altitude: {planeInfo.Altitude} meters";
 
-                signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude);
+                signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude, planeInfo.Latitude, planeInfo.Longitude, planeInfo.Speed);
             }));
         }
 

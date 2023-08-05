@@ -53,14 +53,14 @@ namespace FlightSimBridge
             };
         }
 
-        public async Task SendAltitudeAndSpeed(double altitude)
+        public async Task SendAltitudeAndSpeed(double altitude, double latitude, double longitude, double speed)
         {
             try
             {
                 if (connection.State == HubConnectionState.Connected)
                 {
                     // No need to send the connectionId since the JWT token is already in the request headers
-                    await connection.SendAsync("SendAltitudeAndSpeed", altitude);
+                    await connection.SendAsync("SendAltitudeAndSpeed", altitude, latitude, longitude, speed);
                     Console.WriteLine($"Altitude sent to hub: {altitude}");
 
                     Console.WriteLine("SignalR hub is connected.");

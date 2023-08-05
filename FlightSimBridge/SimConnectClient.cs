@@ -29,6 +29,7 @@ namespace FlightSimBridge
         public double Latitude;
         public double Longitude;
         public double Altitude;
+        public double Speed;
     }
 
     public struct ThrottleData
@@ -65,7 +66,7 @@ namespace FlightSimBridge
                 simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LATITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LONGITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE ALTITUDE", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-
+                simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "AIRSPEED INDICATED", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "GENERAL ENG THROTTLE LEVER POSITION:1", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
 
@@ -102,7 +103,7 @@ namespace FlightSimBridge
                 PlaneInfo planeInfo = WaitForPlaneInfoUpdate();
 
                 // Notify the SignalRHubClient with the new data
-                signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude);
+                signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude, planeInfo.Latitude, planeInfo.Longitude, planeInfo.Speed);
 
                 Thread.Sleep(1000); // Request every second
             }
@@ -162,110 +163,25 @@ namespace FlightSimBridge
         }
 
 
-        private double GetLatitudeFromSimConnect()
-        {
-            try
-            {
-                // Request the latitude data from SimConnect
-                simconnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_PLANE_INFO, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-
-                // Wait for the PlaneInfoUpdated event to be raised with the latest data
-                // This event will be triggered by SimConnect_OnRecvSimobjectDataBytype method
-                // after receiving the requested data from Flight Simulator.
-                // The PlaneInfoUpdated event should have the latitude value.
-                // For example, if PlaneInfoUpdated is of type PlaneInfo:
-                PlaneInfo planeInfo = WaitForPlaneInfoUpdate();
-
-                // Return the latitude value
-                return planeInfo.Latitude;
-            }
-            catch (COMException ex)
-            {
-                Console.WriteLine("Error getting latitude from SimConnect: " + ex.Message);
-                return 0.0; // Or any default value based on your needs
-            }
-        }
-
-        private double GetLongitudeFromSimConnect()
-        {
-            try
-            {
-                // Request the longitude data from SimConnect
-                simconnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_PLANE_INFO, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-
-                // Wait for the PlaneInfoUpdated event to be raised with the latest data
-                // This event will be triggered by SimConnect_OnRecvSimobjectDataBytype method
-                // after receiving the requested data from Flight Simulator.
-                // The PlaneInfoUpdated event should have the longitude value.
-                // For example, if PlaneInfoUpdated is of type PlaneInfo:
-                PlaneInfo planeInfo = WaitForPlaneInfoUpdate();
-
-                // Return the longitude value
-                return planeInfo.Longitude;
-            }
-            catch (COMException ex)
-            {
-                Console.WriteLine("Error getting longitude from SimConnect: " + ex.Message);
-                return 0.0; // Or any default value based on your needs
-            }
-        }
-
-        private double GetAltitudeFromSimConnect()
-        {
-            try
-            {
-                // Request the altitude data from SimConnect
-                simconnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_PLANE_INFO, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-
-                // Wait for the PlaneInfoUpdated event to be raised with the latest data
-                // This event will be triggered by SimConnect_OnRecvSimobjectDataBytype method
-                // after receiving the requested data from Flight Simulator.
-                // The PlaneInfoUpdated event should have the altitude value.
-                // For example, if PlaneInfoUpdated is of type PlaneInfo:
-                PlaneInfo planeInfo = WaitForPlaneInfoUpdate();
-
-                // Return the altitude value
-                return planeInfo.Altitude;
-            }
-            catch (COMException ex)
-            {
-                Console.WriteLine("Error getting altitude from SimConnect: " + ex.Message);
-                return 0.0; // Or any default value based on your needs
-            }
-        }
-
         private TaskCompletionSource<PlaneInfo> tcs = new TaskCompletionSource<PlaneInfo>();
 
         private PlaneInfo WaitForPlaneInfoUpdate()
         {
-            // This method will wait for the PlaneInfoUpdated event to be raised.
-            // We'll use a TaskCompletionSource to handle the synchronization.
-
-            // TaskCompletionSource will be set when the PlaneInfoUpdated event is raised,
-            // and the PlaneInfo data will be available in tcs.Task.Result.
-            // The task will complete and return the PlaneInfo data to the caller.
 
             try
             {
-                // Wait until the PlaneInfoUpdated event is triggered and the task is completed.
-                // Timeout after 5 seconds (adjust this based on your specific scenario).
-                if (tcs.Task.Wait(TimeSpan.FromSeconds(5)))
+                if (tcs.Task.Wait(TimeSpan.FromSeconds(2)))
                 {
-                    // The task completed successfully within the timeout.
                     return tcs.Task.Result;
                 }
                 else
                 {
-                    // The task did not complete within the timeout.
-                    // You can handle this case accordingly, e.g., throw an exception or return default values.
                     Console.WriteLine("Timeout while waiting for PlaneInfoUpdated event.");
                     return new PlaneInfo();
                 }
             }
             catch (AggregateException ex)
             {
-                // Handle any exceptions that might have occurred during the waiting process.
-                // You can handle this case accordingly, e.g., throw an exception or return default values.
                 Console.WriteLine("Error while waiting for PlaneInfoUpdated event: " + ex.Message);
                 return new PlaneInfo();
             }
