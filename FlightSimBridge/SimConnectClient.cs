@@ -36,6 +36,8 @@ namespace FlightSimBridge
         public double Longitude;
         public double Altitude;
         public double Speed;
+        public double Heading;
+        public double ElapsedSeconds;
     }
 
     public struct ThrottleData
@@ -51,6 +53,8 @@ namespace FlightSimBridge
         private readonly SignalRHubClient signalRClient;
         private TaskCompletionSource<PlaneInfo> tcs = new TaskCompletionSource<PlaneInfo>();
 
+        private double previousElapsedSeconds = -1;
+
         public event Action<PlaneInfo> PlaneInfoUpdated;
 
         public SimConnectClient(SignalRHubClient signalRClient)
@@ -60,7 +64,7 @@ namespace FlightSimBridge
             try
             {
                 InitializeSimConnect();
-                SetPauseState(false);
+                //SetPauseState(false);
                 new Thread(ListenerThread).Start();
             }
             catch (COMException ex)
@@ -86,6 +90,8 @@ namespace FlightSimBridge
             simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LONGITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE ALTITUDE", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "AIRSPEED INDICATED", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE HEADING DEGREES TRUE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "ELAPSED_SECONDS", "seconds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             simconnect.RegisterDataDefineStruct<PlaneInfo>(DEFINITIONS.Struct1);
 
@@ -107,9 +113,9 @@ namespace FlightSimBridge
                 simconnect?.ReceiveMessage();
                 RequestPlaneInfo();
                 PlaneInfo planeInfo = WaitForPlaneInfoUpdate();
-                signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude, planeInfo.Latitude, planeInfo.Longitude, planeInfo.Speed);
+                signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude, planeInfo.Latitude, planeInfo.Longitude, planeInfo.Speed, planeInfo.Heading);
 
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
             }
         }
 
@@ -169,7 +175,14 @@ namespace FlightSimBridge
                 if (data.dwRequestID == (int)DATA_REQUESTS.REQUEST_PLANE_INFO)
                 {
                     PlaneInfo receivedData = (PlaneInfo)data.dwData[0];
-                    Console.WriteLine($"Plane Info - Latitude: {receivedData.Latitude}, Longitude: {receivedData.Longitude}, Altitude: {receivedData.Altitude}");
+
+                    bool isPaused = receivedData.ElapsedSeconds == previousElapsedSeconds;
+                    Console.WriteLine($"IsPaused: {isPaused}");
+
+                    // Remember to update the previousElapsedSeconds for the next check
+                    previousElapsedSeconds = receivedData.ElapsedSeconds;
+
+                    Console.WriteLine($"Plane Info - Latitude: {receivedData.Latitude}, Longitude: {receivedData.Longitude}, Altitude: {receivedData.Altitude},  Heading: {receivedData.Heading}");
                     PlaneInfoUpdated?.Invoke(receivedData);
                 }
                 else

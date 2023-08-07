@@ -45,6 +45,12 @@ namespace FlightSimBridge
 
             });
 
+            connection.On<bool>("ReceivePause", (pause) =>
+            {
+                simConnectClient.SetPauseState(pause);
+
+            });
+
 
             connection.Closed += (exception) =>
             {
@@ -53,14 +59,14 @@ namespace FlightSimBridge
             };
         }
 
-        public async Task SendAltitudeAndSpeed(double altitude, double latitude, double longitude, double speed)
+        public async Task SendAltitudeAndSpeed(double altitude, double latitude, double longitude, double speed, double heading)
         {
             try
             {
                 if (connection.State == HubConnectionState.Connected)
                 {
                     // No need to send the connectionId since the JWT token is already in the request headers
-                    await connection.SendAsync("SendAltitudeAndSpeed", altitude, latitude, longitude, speed);
+                    await connection.SendAsync("SendAltitudeAndSpeed", altitude, latitude, longitude, speed, heading);
                     Console.WriteLine($"Altitude sent to hub: {altitude}");
 
                     Console.WriteLine("SignalR hub is connected.");
