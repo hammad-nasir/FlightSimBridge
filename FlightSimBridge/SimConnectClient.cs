@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.FlightSimulator.SimConnect;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace FlightSimBridge
 {
@@ -20,7 +16,17 @@ namespace FlightSimBridge
     public enum DATA_REQUESTS
     {
         REQUEST_PLANE_INFO,
-        REQUEST_THROTTLE_DATA,
+        REQUEST_THROTTLE_DATA
+    }
+
+    public enum MyGroups
+    {
+        GROUP0
+    }
+
+    public enum MyEvents
+    {
+        PAUSE_SET
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
@@ -37,13 +43,15 @@ namespace FlightSimBridge
         public double Throttle;
     }
 
+
     public class SimConnectClient
     {
         private const int WM_USER_SIMCONNECT = 0x0402;
         private SimConnect simconnect = null;
         private readonly SignalRHubClient signalRClient;
+        private TaskCompletionSource<PlaneInfo> tcs = new TaskCompletionSource<PlaneInfo>();
 
-        public event Action<PlaneInfo> PlaneInfoUpdated; // Event to notify about updates / pub/sub events
+        public event Action<PlaneInfo> PlaneInfoUpdated;
 
         public SimConnectClient(SignalRHubClient signalRClient)
         {
@@ -51,42 +59,45 @@ namespace FlightSimBridge
 
             try
             {
-                simconnect = new SimConnect("Managed Data Request", IntPtr.Zero, WM_USER_SIMCONNECT, null, 0);
-
-                //This line adds an event handler to the OnRecvOpen event of the SimConnect instance.
-                //The OnRecvOpen event is triggered when the client application successfully connects to Flight Simulator.
-                simconnect.OnRecvOpen += Simconnect_OnRecvOpen;
-
-                simconnect.OnRecvQuit += Simconnect_OnRecvQuit;
-
-                //This line adds an event handler to the OnRecvSimobjectDataBytype event of the SimConnect instance.
-                //The OnRecvSimobjectDataBytype event is triggered when requested data is received from Flight Simulator.
-                simconnect.OnRecvSimobjectDataBytype += Simconnect_OnRecvSimobjectDataBytype;
-
-                simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LATITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LONGITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE ALTITUDE", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "AIRSPEED INDICATED", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "GENERAL ENG THROTTLE LEVER POSITION:1", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
-
-                simconnect.RegisterDataDefineStruct<PlaneInfo>(DEFINITIONS.Struct1);
-
-                RequestPlaneInfo();
+                InitializeSimConnect();
+                SetPauseState(false);
+                new Thread(ListenerThread).Start();
             }
             catch (COMException ex)
             {
                 Console.WriteLine("Unable to connect to SimConnect: " + ex.Message);
-                return;
             }
-            new Thread(ListenerThread).Start();
         }
 
-        public void RequestPlaneInfo()
+        private void InitializeSimConnect()
         {
-            Console.WriteLine("Requesting plane info...");
-            simconnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_PLANE_INFO, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-            Console.WriteLine("Requested plane info.");
+            simconnect = new SimConnect("Managed Data Request", IntPtr.Zero, WM_USER_SIMCONNECT, null, 0);
+            simconnect.OnRecvOpen += Simconnect_OnRecvOpen;
+            simconnect.OnRecvQuit += Simconnect_OnRecvQuit;
+            simconnect.OnRecvSimobjectDataBytype += Simconnect_OnRecvSimobjectDataBytype;
+            //simconnect.OnRecvEvent += Simconnect_OnRecvEvent;
+
+            RegisterSimConnectDefinitions();
+        }
+
+        private void RegisterSimConnectDefinitions()
+        {
+            simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LATITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE LONGITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE ALTITUDE", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "AIRSPEED INDICATED", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+            simconnect.RegisterDataDefineStruct<PlaneInfo>(DEFINITIONS.Struct1);
+
+            simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "GENERAL ENG THROTTLE LEVER POSITION:1", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.PAUSE_SET, "PAUSE_SET");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.PAUSE_SET, false);
+
+
+
+
         }
 
         private void ListenerThread()
@@ -94,41 +105,55 @@ namespace FlightSimBridge
             while (true)
             {
                 simconnect?.ReceiveMessage();
-                RequestPlaneInfo(); // Move the request inside the loop
-
-                // Wait for the PlaneInfoUpdated event to be raised with the latest data
-                // This event will be triggered by Simconnect_OnRecvSimobjectDataBytype method
-                // after receiving the requested data from Flight Simulator.
-                // The PlaneInfoUpdated event should have the updated latitude, longitude, and altitude values.
+                RequestPlaneInfo();
                 PlaneInfo planeInfo = WaitForPlaneInfoUpdate();
-
-                // Notify the SignalRHubClient with the new data
                 signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude, planeInfo.Latitude, planeInfo.Longitude, planeInfo.Speed);
 
-                Thread.Sleep(1000); // Request every second
+                Thread.Sleep(1000);
             }
+        }
+
+        public void RequestPlaneInfo()
+        {
+            simconnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_PLANE_INFO, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
         }
 
         public void SendThrottle(double throttle)
         {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle = throttle });
+        }
+
+        public void SetPauseState(bool pause)
+        {
             try
             {
-                Console.WriteLine($"Throttle receive in SimConnectClient: {throttle}");
-                // Send the throttle value to Flight Simulator using SimConnect
-                simconnect.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle = throttle });
-
-                Console.WriteLine($"Throttle sent to Flight Simulator: {throttle}");
+                uint pauseValue = pause ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.PAUSE_SET, pauseValue, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.DEFAULT);
             }
             catch (COMException ex)
             {
-                Console.WriteLine($"Error sending throttle to Flight Simulator: {ex.Message}");
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
             }
         }
 
 
+        private PlaneInfo WaitForPlaneInfoUpdate()
+        {
+            if (tcs.Task.Wait(TimeSpan.FromSeconds(2)))
+            {
+                return tcs.Task.Result;
+            }
+            else
+            {
+                Console.WriteLine("Timeout while waiting for PlaneInfoUpdated event.");
+                return new PlaneInfo();
+            }
+        }
+
         private void Simconnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
             Console.WriteLine("Connected to Flight Simulator");
+            RequestPlaneInfo();
         }
 
         private void Simconnect_OnRecvQuit(SimConnect sender, SIMCONNECT_RECV data)
@@ -139,56 +164,30 @@ namespace FlightSimBridge
 
         private void Simconnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
-            Console.WriteLine($"Received sim object data: {JsonConvert.SerializeObject(data)}");
-
-            if (data.dwRequestID == (int)DATA_REQUESTS.REQUEST_PLANE_INFO)
-            {
-                PlaneInfo receivedData = (PlaneInfo)data.dwData[0];
-                Console.WriteLine($"Plane Info - Latitude: {receivedData.Latitude}, Longitude: {receivedData.Longitude}, Altitude: {receivedData.Altitude}");
-
-                if (PlaneInfoUpdated != null)
-                {
-                    Console.WriteLine("PlaneInfoUpdated event is not null, invoking...");
-                    PlaneInfoUpdated?.Invoke(receivedData); // Invoke the event when new data arrives
-                }
-                else
-                {
-                    Console.WriteLine("PlaneInfoUpdated event is null.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Unknown request ID: " + data.dwRequestID);
-            }
-        }
-
-
-        private TaskCompletionSource<PlaneInfo> tcs = new TaskCompletionSource<PlaneInfo>();
-
-        private PlaneInfo WaitForPlaneInfoUpdate()
-        {
-
             try
             {
-                if (tcs.Task.Wait(TimeSpan.FromSeconds(2)))
+                if (data.dwRequestID == (int)DATA_REQUESTS.REQUEST_PLANE_INFO)
                 {
-                    return tcs.Task.Result;
+                    PlaneInfo receivedData = (PlaneInfo)data.dwData[0];
+                    Console.WriteLine($"Plane Info - Latitude: {receivedData.Latitude}, Longitude: {receivedData.Longitude}, Altitude: {receivedData.Altitude}");
+                    PlaneInfoUpdated?.Invoke(receivedData);
                 }
                 else
                 {
-                    Console.WriteLine("Timeout while waiting for PlaneInfoUpdated event.");
-                    return new PlaneInfo();
+                    Console.WriteLine($"Received unknown data of type {data.dwData[0].GetType()} with unknown request ID {data.dwRequestID}.");
                 }
             }
-            catch (AggregateException ex)
+            catch (Exception ex)
             {
-                Console.WriteLine("Error while waiting for PlaneInfoUpdated event: " + ex.Message);
-                return new PlaneInfo();
+                Console.WriteLine("Exception occurred in Simconnect_OnRecvSimobjectDataBytype: ");
+                Console.WriteLine("Message: " + ex.Message);
+                Console.WriteLine("StackTrace: " + ex.StackTrace);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("InnerException Message : " + ex.InnerException.Message);
+                }
             }
         }
-
-
-
 
 
         ~SimConnectClient()
@@ -197,6 +196,7 @@ namespace FlightSimBridge
         }
     }
 }
+
 
 
 //This class first defines the structure of the data we want from Flight Simulator.
