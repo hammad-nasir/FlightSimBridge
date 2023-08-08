@@ -10,7 +10,9 @@ namespace FlightSimBridge
     public enum DEFINITIONS
     {
         Struct1,
-        ThrottleData
+        ThrottleData,
+        BrakeData,
+        FlapData
     }
 
     public enum DATA_REQUESTS
@@ -43,6 +45,16 @@ namespace FlightSimBridge
     public struct ThrottleData
     {
         public double Throttle;
+    }
+
+    public struct BrakeData
+    {
+        public bool Brake;
+    }
+
+    public struct FlapData
+    {
+        public double Flap;
     }
 
 
@@ -97,6 +109,10 @@ namespace FlightSimBridge
 
             simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "GENERAL ENG THROTTLE LEVER POSITION:1", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
+            simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "SPOILERS ARMED", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<BrakeData>(DEFINITIONS.BrakeData);
+            simconnect.AddToDataDefinition(DEFINITIONS.FlapData, "FLAPS HANDLE PERCENT", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<FlapData>(DEFINITIONS.FlapData);
 
             simconnect.MapClientEventToSimEvent(MyEvents.PAUSE_SET, "PAUSE_SET");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.PAUSE_SET, false);
@@ -128,6 +144,18 @@ namespace FlightSimBridge
         {
             simconnect?.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle = throttle });
         }
+
+        public void SendBrake(bool brake)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.BrakeData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new BrakeData { Brake = brake });
+        }
+
+        public void SendFlap(double flap)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.FlapData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new FlapData { Flap = flap });
+        }
+
+
 
         public void SetPauseState(bool pause)
         {
