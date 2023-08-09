@@ -74,6 +74,12 @@ namespace FlightSimBridge
 
             });
 
+            connection.On<bool>("ReceiveAP", (ap) =>
+            {
+                simConnectClient.SetAutopilot(ap);
+
+            });
+
             connection.On<bool>("ReceivePause", (pause) =>
             {
                 simConnectClient.SetPauseState(pause);

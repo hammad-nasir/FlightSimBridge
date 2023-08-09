@@ -14,7 +14,8 @@ namespace FlightSimBridge
         BrakeData,
         FlapData,
         PlanePitchData,
-        PlaneBankData
+        PlaneBankData,
+        AutopilotData
     }
 
     public enum DATA_REQUESTS
@@ -31,7 +32,8 @@ namespace FlightSimBridge
 
     public enum MyEvents
     {
-        PAUSE_SET
+        PAUSE_SET,
+        AP_SET,
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
@@ -43,6 +45,7 @@ namespace FlightSimBridge
         public double Speed;
         public double Heading;
         public double ElapsedSeconds;
+        public int AutoPilot;
     }
 
     public struct ThrottleData
@@ -71,6 +74,12 @@ namespace FlightSimBridge
         public double PlaneBankDegrees;
     }
 
+    public struct AutopilotData 
+    {
+        public int Autopilot;
+    }
+    
+
 
     public class SimConnectClient
     {
@@ -90,7 +99,7 @@ namespace FlightSimBridge
             try
             {
                 InitializeSimConnect();
-                //SetPauseState(false);
+                SetAutopilot(false);
                 new Thread(ListenerThread).Start();
             }
             catch (COMException ex)
@@ -118,6 +127,7 @@ namespace FlightSimBridge
             simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "AIRSPEED INDICATED", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "PLANE HEADING DEGREES TRUE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "ELAPSED_SECONDS", "seconds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "AUTOPILOT MASTER", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
             simconnect.RegisterDataDefineStruct<PlaneInfo>(DEFINITIONS.Struct1);
 
@@ -134,6 +144,12 @@ namespace FlightSimBridge
             simconnect.RegisterDataDefineStruct<PlanePitchData>(DEFINITIONS.PlanePitchData);
             simconnect.AddToDataDefinition(DEFINITIONS.PlaneBankData, "PLANE BANK DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<PlanePitchData>(DEFINITIONS.PlaneBankData);
+
+            //simconnect.AddToDataDefinition(DEFINITIONS.AutopilotData, "AUTOPILOT MASTER", "Bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            //simconnect.RegisterDataDefineStruct<AutopilotData>(DEFINITIONS.AutopilotData);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_SET, "AP_MASTER");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_SET, false);
 
             simconnect.MapClientEventToSimEvent(MyEvents.PAUSE_SET, "PAUSE_SET");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.PAUSE_SET, false);
@@ -186,6 +202,20 @@ namespace FlightSimBridge
         {
             simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneBankData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneBankData { PlaneBankDegrees = bank });
         }
+
+        public void SetAutopilot(bool isOn)
+        {
+            try
+            {
+                uint pauseValue = isOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_SET, pauseValue, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
+            }
+        }
+
 
 
 
@@ -242,7 +272,7 @@ namespace FlightSimBridge
                     // Remember to update the previousElapsedSeconds for the next check
                     previousElapsedSeconds = receivedData.ElapsedSeconds;
 
-                    Console.WriteLine($"Plane Info - Latitude: {receivedData.Latitude}, Longitude: {receivedData.Longitude}, Altitude: {receivedData.Altitude},  Heading: {receivedData.Heading}");
+                    Console.WriteLine($"Plane Info - Latitude: {receivedData.Latitude}, Longitude: {receivedData.Longitude}, Altitude: {receivedData.Altitude},  Heading: {receivedData.Heading},  AP: {receivedData.AutoPilot}");
                     PlaneInfoUpdated?.Invoke(receivedData);
                 }
                 else
