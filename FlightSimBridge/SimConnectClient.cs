@@ -12,13 +12,16 @@ namespace FlightSimBridge
         Struct1,
         ThrottleData,
         BrakeData,
-        FlapData
+        FlapData,
+        PlanePitchData,
+        PlaneBankData
     }
 
     public enum DATA_REQUESTS
     {
         REQUEST_PLANE_INFO,
-        REQUEST_THROTTLE_DATA
+        REQUEST_THROTTLE_DATA,
+
     }
 
     public enum MyGroups
@@ -44,7 +47,8 @@ namespace FlightSimBridge
 
     public struct ThrottleData
     {
-        public double Throttle;
+        public double Throttle1;
+        public double Throttle2;
     }
 
     public struct BrakeData
@@ -55,6 +59,16 @@ namespace FlightSimBridge
     public struct FlapData
     {
         public double Flap;
+    }
+
+    public struct PlanePitchData
+    {
+        public double PlanePitchDegrees;
+    }
+
+    public struct PlaneBankData
+    {
+        public double PlaneBankDegrees;
     }
 
 
@@ -108,11 +122,18 @@ namespace FlightSimBridge
             simconnect.RegisterDataDefineStruct<PlaneInfo>(DEFINITIONS.Struct1);
 
             simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "GENERAL ENG THROTTLE LEVER POSITION:1", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "GENERAL ENG THROTTLE LEVER POSITION:2", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            //simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "TURB ENG JET THRUST:1", "pounds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            //simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "TURB ENG JET THRUST:2", "pounds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
             simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "SPOILERS ARMED", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<BrakeData>(DEFINITIONS.BrakeData);
             simconnect.AddToDataDefinition(DEFINITIONS.FlapData, "FLAPS HANDLE PERCENT", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<FlapData>(DEFINITIONS.FlapData);
+            simconnect.AddToDataDefinition(DEFINITIONS.PlanePitchData, "PLANE PITCH DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<PlanePitchData>(DEFINITIONS.PlanePitchData);
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneBankData, "PLANE BANK DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<PlanePitchData>(DEFINITIONS.PlaneBankData);
 
             simconnect.MapClientEventToSimEvent(MyEvents.PAUSE_SET, "PAUSE_SET");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.PAUSE_SET, false);
@@ -140,9 +161,10 @@ namespace FlightSimBridge
             simconnect?.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_PLANE_INFO, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
         }
 
-        public void SendThrottle(double throttle)
+        public void SendThrottle(double throttle1, double throttle2)
         {
-            simconnect?.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle = throttle });
+            //simconnect?.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle = throttle });
+            simconnect?.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle1 = throttle1, Throttle2 = throttle2 });
         }
 
         public void SendBrake(bool brake)
@@ -153,6 +175,16 @@ namespace FlightSimBridge
         public void SendFlap(double flap)
         {
             simconnect?.SetDataOnSimObject(DEFINITIONS.FlapData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new FlapData { Flap = flap });
+        }
+
+        public void SendPitch(double pitch)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.PlanePitchData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlanePitchData { PlanePitchDegrees = pitch });
+        }
+
+        public void SendBank(double bank)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneBankData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneBankData { PlaneBankDegrees = bank });
         }
 
 

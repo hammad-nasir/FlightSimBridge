@@ -38,12 +38,13 @@ namespace FlightSimBridge
                 .WithAutomaticReconnect()
                 .Build();
 
-            connection.On<double>("ReceiveThrottle", (throttle) =>
+            connection.On<double, double>("ReceiveThrottle", (throttle1, throttle2) =>
             {
-                Console.WriteLine($"Received Throttle on FlightSimBridge: {throttle}");
-                simConnectClient.SendThrottle(throttle);
+                Console.WriteLine($"Received Throttles on FlightSimBridge: {throttle1},  {throttle2}");
+                simConnectClient.SendThrottle(throttle1, throttle2);
 
             });
+
 
             connection.On<bool>("ReceiveBrake", (brake) =>
             {
@@ -56,6 +57,20 @@ namespace FlightSimBridge
             {
                 Console.WriteLine($"Received Flap on FlightSimBridge: {flap}");
                 simConnectClient.SendFlap(flap);
+
+            });
+
+            connection.On<double>("ReceivePitch", (pitch) =>
+            {
+                Console.WriteLine($"Received Pitch on FlightSimBridge: {pitch}");
+                simConnectClient.SendPitch(pitch);
+
+            });
+
+            connection.On<double>("ReceiveBank", (bank) =>
+            {
+                Console.WriteLine($"Received Pitch on FlightSimBridge: {bank}");
+                simConnectClient.SendBank(bank);
 
             });
 
