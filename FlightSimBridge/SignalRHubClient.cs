@@ -80,6 +80,42 @@ namespace FlightSimBridge
 
             });
 
+            connection.On<AltHoldData>("ReceiveAltHold", (data) =>
+            {
+                simConnectClient.SetAutopilotAltHold(data);
+
+            });
+
+            connection.On<bool>("ReceiveSpeedHold", (ap) =>
+            {
+                simConnectClient.SetAutopilotSpeedHold(ap);
+
+            });
+
+            connection.On<bool>("ReceiveAprHold", (ap) =>
+            {
+                simConnectClient.SetAutopilotApprHold(ap);
+
+            });
+
+            connection.On<bool>("ReceiveAttHold", (ap) =>
+            {
+                simConnectClient.SetAutopilotAttHold(ap);
+
+            });
+
+            connection.On<bool>("ReceiveHdgHold", (ap) =>
+            {
+                simConnectClient.SetAutopilotHdgHold(ap);
+
+            });
+
+            connection.On<bool>("ReceiveVsHold", (ap) =>
+            {
+                simConnectClient.SetAutopilotVsHold(ap);
+
+            });
+
             connection.On<bool>("ReceivePause", (pause) =>
             {
                 simConnectClient.SetPauseState(pause);

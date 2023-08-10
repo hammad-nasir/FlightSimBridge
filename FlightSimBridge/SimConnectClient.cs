@@ -34,6 +34,14 @@ namespace FlightSimBridge
     {
         PAUSE_SET,
         AP_SET,
+        AP_ALT_HOLD,
+        AP_SET_ALT,
+        AP_AIRSPEED_HOLD,
+        AP_APR_HOLD,
+        AP_ATT_HOLD,
+        AP_HDG_HOLD,
+        AP_SPD_VAR_SET
+
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
@@ -78,7 +86,12 @@ namespace FlightSimBridge
     {
         public int Autopilot;
     }
-    
+
+    public class AltHoldData
+    {
+        public bool IsOn { get; set; }
+        public int Altitude { get; set; }
+    }
 
 
     public class SimConnectClient
@@ -148,8 +161,31 @@ namespace FlightSimBridge
             //simconnect.AddToDataDefinition(DEFINITIONS.AutopilotData, "AUTOPILOT MASTER", "Bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             //simconnect.RegisterDataDefineStruct<AutopilotData>(DEFINITIONS.AutopilotData);
 
+
             simconnect.MapClientEventToSimEvent(MyEvents.AP_SET, "AP_MASTER");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_SET, false);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_ALT_HOLD, "AP_ALT_HOLD");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_ALT_HOLD, false);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_SET_ALT, "AP_PANEL_ALTITUDE_SET");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_SET_ALT, false);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_AIRSPEED_HOLD, "AP_AIRSPEED_HOLD");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_AIRSPEED_HOLD, false);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_APR_HOLD, "AP_APR_HOLD");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_APR_HOLD, false);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_ATT_HOLD, "AP_ATT_HOLD");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_ATT_HOLD, false);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_HDG_HOLD, "AP_HDG_HOLD");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_HDG_HOLD, false);
+
+            simconnect.MapClientEventToSimEvent(MyEvents.AP_SPD_VAR_SET, "AP_SPD_VAR_SET");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_SPD_VAR_SET, false);
+
 
             simconnect.MapClientEventToSimEvent(MyEvents.PAUSE_SET, "PAUSE_SET");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.PAUSE_SET, false);
@@ -203,12 +239,14 @@ namespace FlightSimBridge
             simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneBankData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneBankData { PlaneBankDegrees = bank });
         }
 
+
+
         public void SetAutopilot(bool isOn)
         {
             try
             {
-                uint pauseValue = isOn ? 1u : 0u;
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_SET, pauseValue, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                uint val = isOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_SET, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
             catch (COMException ex)
             {
@@ -216,7 +254,86 @@ namespace FlightSimBridge
             }
         }
 
+        public void SetAutopilotAltHold(AltHoldData data)
+        {
+            try
+            {
+                uint val = data.IsOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_ALT_HOLD, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 
+                // Send the altitude event to the simulator
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_SET_ALT, (uint)data.Altitude, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending commands to Flight Simulator: {ex.Message}");
+            }
+        }
+
+        public void SetAutopilotSpeedHold(bool isOn)
+        {
+            try
+            {
+                uint val = isOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_AIRSPEED_HOLD, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
+            }
+        }
+
+        public void SetAutopilotApprHold(bool isOn)
+        {
+            try
+            {
+                uint val = isOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_APR_HOLD, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
+            }
+        }
+
+        public void SetAutopilotAttHold(bool isOn)
+        {
+            try
+            {
+                uint val = isOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_ATT_HOLD, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
+            }
+        }
+
+        public void SetAutopilotHdgHold(bool isOn)
+        {
+            try
+            {
+                uint val = isOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_HDG_HOLD, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
+            }
+        }
+
+        public void SetAutopilotVsHold(bool isOn)
+        {
+            try
+            {
+                uint val = isOn ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_SPD_VAR_SET, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
+            }
+        }
 
 
         public void SetPauseState(bool pause)
