@@ -24,8 +24,8 @@ namespace FlightSimBridge
         private async void loginBtn_Click(object sender, EventArgs e)
         {
             //remove the below 2 lines in prod
-            emailTxt.Text = "hammadnasir@hotmail.co.uk";
-            passwordTxt.Text = "hammad";
+            //emailTxt.Text = "hammadnasir@hotmail.co.uk";
+            //passwordTxt.Text = "hammad";
             string email = emailTxt.Text;
             string password = passwordTxt.Text;
             bool rememberMe = rememberMeChk.Checked;

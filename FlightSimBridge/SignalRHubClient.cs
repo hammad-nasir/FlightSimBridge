@@ -113,12 +113,12 @@ namespace FlightSimBridge
             connection.On<bool>("ReceiveAltHold", (ap) =>
             {
                 Console.WriteLine($"Received ALT HOLD: {ap}");
-                simConnectClient.SetAutopilotSpeedHold(ap);
+                simConnectClient.SetAutopilotAltHold(ap);
 
             });
 
 
-            connection.On<bool>("ReceiveSpeedHold", (ap) =>
+            connection.On<bool>("ReceiveSpdHold", (ap) =>
             {
                 Console.WriteLine($"Received SPEED HOLD: {ap}");
                 simConnectClient.SetAutopilotSpeedHold(ap);

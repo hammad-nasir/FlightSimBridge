@@ -40,7 +40,7 @@ namespace FlightSimBridge
             {
                 //latitudeLabel.Text = $"Latitude: {planeInfo.Latitude} degrees";
                 //longitudeLabel.Text = $"Longitude: {planeInfo.Longitude} degrees";
-                altitudeLabel.Text = $"Altitude: {planeInfo.Altitude} meters";
+                //altitudeLabel.Text = $"Altitude: {planeInfo.Altitude} meters";
 
                 signalRClient.SendAltitudeAndSpeed(planeInfo.Altitude, planeInfo.Latitude, planeInfo.Longitude, planeInfo.Speed, planeInfo.Heading);
             }));
@@ -55,6 +55,11 @@ namespace FlightSimBridge
         private void Form1_Load(object sender, EventArgs e)
         {
             signalRClient.ConnectAsync();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://localhost:5233");
         }
     }
 }

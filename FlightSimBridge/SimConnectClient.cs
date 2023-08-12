@@ -173,7 +173,7 @@ namespace FlightSimBridge
             simconnect.AddToDataDefinition(DEFINITIONS.PlanePitchData, "PLANE PITCH DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<PlanePitchData>(DEFINITIONS.PlanePitchData);
             simconnect.AddToDataDefinition(DEFINITIONS.PlaneBankData, "PLANE BANK DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            simconnect.RegisterDataDefineStruct<PlanePitchData>(DEFINITIONS.PlaneBankData);
+            simconnect.RegisterDataDefineStruct<PlaneBankData>(DEFINITIONS.PlaneBankData);
 
             simconnect.AddToDataDefinition(DEFINITIONS.PlaneTargetAltitudeData, "AUTOPILOT ALTITUDE LOCK VAR", "feet", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<PlaneTargetAltitudeData>(DEFINITIONS.PlaneTargetAltitudeData);
