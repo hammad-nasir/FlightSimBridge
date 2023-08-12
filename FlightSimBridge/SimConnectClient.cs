@@ -15,7 +15,11 @@ namespace FlightSimBridge
         FlapData,
         PlanePitchData,
         PlaneBankData,
-        AutopilotData
+        AutopilotData,
+        PlaneTargetAltitudeData,
+        PlaneTargetSpeedData,
+        PlaneTargetHeadingData,
+        PlaneTargetVSData
     }
 
     public enum DATA_REQUESTS
@@ -35,7 +39,6 @@ namespace FlightSimBridge
         PAUSE_SET,
         AP_SET,
         AP_ALT_HOLD,
-        AP_SET_ALT,
         AP_AIRSPEED_HOLD,
         AP_APR_HOLD,
         AP_ATT_HOLD,
@@ -82,15 +85,29 @@ namespace FlightSimBridge
         public double PlaneBankDegrees;
     }
 
+    public struct PlaneTargetAltitudeData
+    {
+        public double PlaneTargetAltitude;
+    }
+
+    public struct PlaneTargetSpeedData
+    {
+        public double PlaneTargetSpeed;
+    }
+
+    public struct PlaneTargetHeadingData
+    {
+        public double PlaneTargetHeading;
+    }
+
+    public struct PlaneTargetVSData
+    {
+        public double PlaneTargetVS;
+    }
+
     public struct AutopilotData 
     {
         public int Autopilot;
-    }
-
-    public class AltHoldData
-    {
-        public bool IsOn { get; set; }
-        public int Altitude { get; set; }
     }
 
 
@@ -158,6 +175,18 @@ namespace FlightSimBridge
             simconnect.AddToDataDefinition(DEFINITIONS.PlaneBankData, "PLANE BANK DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<PlanePitchData>(DEFINITIONS.PlaneBankData);
 
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneTargetAltitudeData, "AUTOPILOT ALTITUDE LOCK VAR", "feet", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<PlaneTargetAltitudeData>(DEFINITIONS.PlaneTargetAltitudeData);
+
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneTargetSpeedData, "AUTOPILOT AIRSPEED HOLD VAR", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<PlaneTargetSpeedData>(DEFINITIONS.PlaneTargetSpeedData);
+
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneTargetHeadingData, "AUTOPILOT HEADING LOCK DIR", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<PlaneTargetHeadingData>(DEFINITIONS.PlaneTargetHeadingData);
+
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneTargetVSData, "AUTOPILOT VERTICAL HOLD VAR", "feet/minute", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.RegisterDataDefineStruct<PlaneTargetVSData>(DEFINITIONS.PlaneTargetVSData);
+
             //simconnect.AddToDataDefinition(DEFINITIONS.AutopilotData, "AUTOPILOT MASTER", "Bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             //simconnect.RegisterDataDefineStruct<AutopilotData>(DEFINITIONS.AutopilotData);
 
@@ -167,9 +196,6 @@ namespace FlightSimBridge
 
             simconnect.MapClientEventToSimEvent(MyEvents.AP_ALT_HOLD, "AP_ALT_HOLD");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_ALT_HOLD, false);
-
-            simconnect.MapClientEventToSimEvent(MyEvents.AP_SET_ALT, "AP_PANEL_ALTITUDE_SET");
-            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_SET_ALT, false);
 
             simconnect.MapClientEventToSimEvent(MyEvents.AP_AIRSPEED_HOLD, "AP_AIRSPEED_HOLD");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.AP_AIRSPEED_HOLD, false);
@@ -239,6 +265,26 @@ namespace FlightSimBridge
             simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneBankData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneBankData { PlaneBankDegrees = bank });
         }
 
+        public void SendTargetAltitude(double alt)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneTargetAltitudeData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneTargetAltitudeData { PlaneTargetAltitude = alt });
+        }
+
+        public void SendTargetSpeed(double spd)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneTargetSpeedData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneTargetSpeedData { PlaneTargetSpeed = spd });
+        }
+
+        public void SendTargetHeading(double hdg)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneTargetHeadingData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneTargetHeadingData { PlaneTargetHeading = hdg });
+        }
+
+        public void SendTargetVS(double vs)
+        {
+            simconnect?.SetDataOnSimObject(DEFINITIONS.PlaneTargetVSData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new PlaneTargetVSData { PlaneTargetVS = vs });
+        }
+
 
 
         public void SetAutopilot(bool isOn)
@@ -254,19 +300,17 @@ namespace FlightSimBridge
             }
         }
 
-        public void SetAutopilotAltHold(AltHoldData data)
+
+        public void SetAutopilotAltHold(bool isOn)
         {
             try
             {
-                uint val = data.IsOn ? 1u : 0u;
+                uint val = isOn ? 1u : 0u;
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_ALT_HOLD, val, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-
-                // Send the altitude event to the simulator
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.AP_SET_ALT, (uint)data.Altitude, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
             catch (COMException ex)
             {
-                Console.WriteLine($"Error sending commands to Flight Simulator: {ex.Message}");
+                Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
             }
         }
 

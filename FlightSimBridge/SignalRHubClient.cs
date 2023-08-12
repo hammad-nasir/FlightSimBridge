@@ -76,18 +76,51 @@ namespace FlightSimBridge
 
             connection.On<bool>("ReceiveAP", (ap) =>
             {
+                Console.WriteLine($"Received AP STATE: {ap}");
                 simConnectClient.SetAutopilot(ap);
 
             });
 
-            connection.On<AltHoldData>("ReceiveAltHold", (data) =>
+            connection.On<double>("ReceiveTargetAltitude", (alt) =>
             {
-                simConnectClient.SetAutopilotAltHold(data);
+                Console.WriteLine($"Received Target Altitude on FlightSimBridge: {alt}");
+                simConnectClient.SendTargetAltitude(alt);
 
             });
 
+            connection.On<double>("ReceiveTargetSpeed", (spd) =>
+            {
+                Console.WriteLine($"Received Target Speed on FlightSimBridge: {spd}");
+                simConnectClient.SendTargetSpeed(spd);
+
+            });
+
+            connection.On<double>("ReceiveTargetHeading", (hdg) =>
+            {
+                Console.WriteLine($"Received Target Heading on FlightSimBridge: {hdg}");
+                simConnectClient.SendTargetHeading(hdg);
+
+            });
+
+            connection.On<double>("ReceiveTargetVS", (vs) =>
+            {
+                Console.WriteLine($"Received Target VS on FlightSimBridge: {vs}");
+                simConnectClient.SendTargetVS(vs);
+
+            });
+
+
+            connection.On<bool>("ReceiveAltHold", (ap) =>
+            {
+                Console.WriteLine($"Received ALT HOLD: {ap}");
+                simConnectClient.SetAutopilotSpeedHold(ap);
+
+            });
+
+
             connection.On<bool>("ReceiveSpeedHold", (ap) =>
             {
+                Console.WriteLine($"Received SPEED HOLD: {ap}");
                 simConnectClient.SetAutopilotSpeedHold(ap);
 
             });
@@ -106,6 +139,7 @@ namespace FlightSimBridge
 
             connection.On<bool>("ReceiveHdgHold", (ap) =>
             {
+                Console.WriteLine($"Received HDG HOLD: {ap}");
                 simConnectClient.SetAutopilotHdgHold(ap);
 
             });
