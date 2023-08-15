@@ -19,13 +19,25 @@ namespace FlightSimBridge
         {
             InitializeComponent();
 
+            LoadSavedCredentials();
+
+        }
+
+        private void LoadSavedCredentials()
+        {
+            // Get saved email, password and rememberMe from settings
+            emailTxt.Text = Properties.Settings.Default.SavedEmail ?? string.Empty;
+
+            passwordTxt.Text = Properties.Settings.Default.SavedPassword ?? string.Empty;
+
+            rememberMeChk.Checked = Properties.Settings.Default.RememberMe;
         }
 
         private async void loginBtn_Click(object sender, EventArgs e)
         {
             //remove the below 2 lines in prod
-            emailTxt.Text = "h@hotmail.com";
-            passwordTxt.Text = "hammad";
+            //emailTxt.Text = "h@hotmail.com";
+            //passwordTxt.Text = "hammad";
             string email = emailTxt.Text;
             string password = passwordTxt.Text;
             bool rememberMe = rememberMeChk.Checked;
@@ -34,6 +46,8 @@ namespace FlightSimBridge
 
             if (token != null)
             {
+                SaveCredentialsIfRememberMeChecked(email, password, rememberMe);
+
                 this.Hide();
                 Form1 form1 = new Form1(token);
                 form1.Closed += (s, args) => this.Close();
@@ -44,6 +58,27 @@ namespace FlightSimBridge
                 MessageBox.Show("Invalid email or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
+
+        private void SaveCredentialsIfRememberMeChecked(string email, string password, bool rememberMe)
+        {
+            if (rememberMe)
+            {
+                // Save the email and password to the settings
+                Properties.Settings.Default.SavedEmail = email;
+
+                Properties.Settings.Default.SavedPassword = password;
+            }
+            else
+            {
+                // Clear saved credentials
+                Properties.Settings.Default.SavedEmail = string.Empty;
+                Properties.Settings.Default.SavedPassword = string.Empty;
+                Properties.Settings.Default.Save();
+            }
+
+            Properties.Settings.Default.RememberMe = rememberMe;
+            Properties.Settings.Default.Save();
         }
 
         private static async Task<string> AuthenticateUser(string email, string password)
