@@ -46,10 +46,10 @@ namespace FlightSimBridge
             });
 
 
-            connection.On<bool>("ReceiveBrake", (brake) =>
+            connection.On<double,double>("ReceiveBrake", (leftBrake, rightBrake) =>
             {
-                Console.WriteLine($"Received Brake on FlightSimBridge: {brake}");
-                simConnectClient.SendBrake(brake);
+                Console.WriteLine($"Received Brakes on FlightSimBridge: {leftBrake}, {rightBrake}");
+                simConnectClient.SendBrake(leftBrake, rightBrake);
 
             });
 
@@ -155,6 +155,13 @@ namespace FlightSimBridge
                 simConnectClient.SetPauseState(pause);
 
             });
+
+            connection.On<bool>("ReceiveParkingBrakes", (brake) =>
+            {
+                simConnectClient.SetParkingBrakesState(brake);
+
+            });
+
 
 
             connection.Closed += (exception) =>

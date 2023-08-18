@@ -37,6 +37,7 @@ namespace FlightSimBridge
     public enum MyEvents
     {
         PAUSE_SET,
+        PARKING_BRAKES,
         AP_SET,
         AP_ALT_HOLD,
         AP_AIRSPEED_HOLD,
@@ -67,7 +68,8 @@ namespace FlightSimBridge
 
     public struct BrakeData
     {
-        public bool Brake;
+        public double BrakeRightPosition;
+        public double BrakeLeftPosition;
     }
 
     public struct FlapData
@@ -166,7 +168,9 @@ namespace FlightSimBridge
             //simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "TURB ENG JET THRUST:1", "pounds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             //simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "TURB ENG JET THRUST:2", "pounds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
-            simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "SPOILERS ARMED", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "BRAKE RIGHT POSITION", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "BRAKE LEFT POSITION", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            //simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "SPOILERS ARMED", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<BrakeData>(DEFINITIONS.BrakeData);
             simconnect.AddToDataDefinition(DEFINITIONS.FlapData, "FLAPS HANDLE PERCENT", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<FlapData>(DEFINITIONS.FlapData);
@@ -216,6 +220,11 @@ namespace FlightSimBridge
             simconnect.MapClientEventToSimEvent(MyEvents.PAUSE_SET, "PAUSE_SET");
             simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.PAUSE_SET, false);
 
+            simconnect.MapClientEventToSimEvent(MyEvents.PARKING_BRAKES, "PARKING_BRAKES");
+            simconnect.AddClientEventToNotificationGroup(MyGroups.GROUP0, MyEvents.PARKING_BRAKES, false);
+
+            
+
 
 
 
@@ -245,10 +254,23 @@ namespace FlightSimBridge
             simconnect?.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle1 = throttle1, Throttle2 = throttle2 });
         }
 
-        public void SendBrake(bool brake)
+        public void SendBrake(double rightBrakePosition, double leftBrakePosition)
         {
-            simconnect?.SetDataOnSimObject(DEFINITIONS.BrakeData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new BrakeData { Brake = brake });
+            simconnect?.SetDataOnSimObject(
+                DEFINITIONS.BrakeData,
+                SimConnect.SIMCONNECT_OBJECT_ID_USER,
+                SIMCONNECT_DATA_SET_FLAG.DEFAULT,
+                new BrakeData
+                {
+                    BrakeRightPosition = rightBrakePosition,
+                    BrakeLeftPosition = leftBrakePosition
+                });
         }
+
+        //public void SendBrake(bool brake)
+        //{
+        //    simconnect?.SetDataOnSimObject(DEFINITIONS.BrakeData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new BrakeData { Brake = brake });
+        //}
 
         public void SendFlap(double flap)
         {
@@ -392,6 +414,21 @@ namespace FlightSimBridge
                 Console.WriteLine($"Error sending pause command to Flight Simulator: {ex.Message}");
             }
         }
+
+        public void SetParkingBrakesState(bool brake)
+        {
+            try
+            {
+                uint brakeValue = brake ? 1u : 0u;
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, MyEvents.PARKING_BRAKES, brakeValue, MyGroups.GROUP0, SIMCONNECT_EVENT_FLAG.DEFAULT);
+            }
+            catch (COMException ex)
+            {
+                Console.WriteLine($"Error sending brake command to Flight Simulator: {ex.Message}");
+            }
+        }
+
+        
 
 
         private PlaneInfo WaitForPlaneInfoUpdate()
