@@ -46,10 +46,17 @@ namespace FlightSimBridge
             });
 
 
-            connection.On<double,double>("ReceiveBrake", (leftBrake, rightBrake) =>
+            connection.On<double>("ReceiveLeftBrake", (leftBrake) =>
             {
-                Console.WriteLine($"Received Brakes on FlightSimBridge: {leftBrake}, {rightBrake}");
-                simConnectClient.SendBrake(leftBrake, rightBrake);
+                Console.WriteLine($"Received Brakes on FlightSimBridge: {leftBrake}");
+                simConnectClient.SendLeftBrake(leftBrake);
+
+            });
+
+            connection.On<double>("ReceiveRightBrake", (rightBrake) =>
+            {
+                Console.WriteLine($"Received Brakes on FlightSimBridge: {rightBrake}");
+                simConnectClient.SendRightBrake(rightBrake);
 
             });
 

@@ -11,7 +11,8 @@ namespace FlightSimBridge
     {
         Struct1,
         ThrottleData,
-        BrakeData,
+        LeftBrakeData,
+        RightBrakeData,
         FlapData,
         PlanePitchData,
         PlaneBankData,
@@ -66,10 +67,14 @@ namespace FlightSimBridge
         public double Throttle2;
     }
 
-    public struct BrakeData
+    public struct LeftBrakeData
     {
-        public double BrakeRightPosition;
-        public double BrakeLeftPosition;
+        public double leftBrakePosition;
+    }
+
+    public struct RightBrakeData
+    {
+        public double rightBrakePosition;
     }
 
     public struct FlapData
@@ -168,10 +173,12 @@ namespace FlightSimBridge
             //simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "TURB ENG JET THRUST:1", "pounds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             //simconnect.AddToDataDefinition(DEFINITIONS.ThrottleData, "TURB ENG JET THRUST:2", "pounds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<ThrottleData>(DEFINITIONS.ThrottleData);
-            simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "BRAKE RIGHT POSITION", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "BRAKE LEFT POSITION", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.LeftBrakeData, "BRAKE LEFT POSITION", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.RightBrakeData, "BRAKE RIGHT POSITION", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
             //simconnect.AddToDataDefinition(DEFINITIONS.BrakeData, "SPOILERS ARMED", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-            simconnect.RegisterDataDefineStruct<BrakeData>(DEFINITIONS.BrakeData);
+            simconnect.RegisterDataDefineStruct<LeftBrakeData>(DEFINITIONS.LeftBrakeData);
+            simconnect.RegisterDataDefineStruct<RightBrakeData>(DEFINITIONS.RightBrakeData);
             simconnect.AddToDataDefinition(DEFINITIONS.FlapData, "FLAPS HANDLE PERCENT", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
             simconnect.RegisterDataDefineStruct<FlapData>(DEFINITIONS.FlapData);
             simconnect.AddToDataDefinition(DEFINITIONS.PlanePitchData, "PLANE PITCH DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -254,18 +261,30 @@ namespace FlightSimBridge
             simconnect?.SetDataOnSimObject(DEFINITIONS.ThrottleData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new ThrottleData { Throttle1 = throttle1, Throttle2 = throttle2 });
         }
 
-        public void SendBrake(double rightBrakePosition, double leftBrakePosition)
+        public void SendLeftBrake(double leftBrakePosition)
         {
             simconnect?.SetDataOnSimObject(
-                DEFINITIONS.BrakeData,
+                DEFINITIONS.LeftBrakeData,
                 SimConnect.SIMCONNECT_OBJECT_ID_USER,
                 SIMCONNECT_DATA_SET_FLAG.DEFAULT,
-                new BrakeData
+                new LeftBrakeData
                 {
-                    BrakeRightPosition = rightBrakePosition,
-                    BrakeLeftPosition = leftBrakePosition
+                    leftBrakePosition = leftBrakePosition
                 });
         }
+
+        public void SendRightBrake(double rightBrakePosition)
+        {
+            simconnect?.SetDataOnSimObject(
+                DEFINITIONS.RightBrakeData,
+                SimConnect.SIMCONNECT_OBJECT_ID_USER,
+                SIMCONNECT_DATA_SET_FLAG.DEFAULT,
+                new RightBrakeData
+                {
+                    rightBrakePosition = rightBrakePosition
+                });
+        }
+
 
         //public void SendBrake(bool brake)
         //{
