@@ -286,11 +286,6 @@ namespace FlightSimBridge
         }
 
 
-        //public void SendBrake(bool brake)
-        //{
-        //    simconnect?.SetDataOnSimObject(DEFINITIONS.BrakeData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new BrakeData { Brake = brake });
-        //}
-
         public void SendFlap(double flap)
         {
             simconnect?.SetDataOnSimObject(DEFINITIONS.FlapData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, new FlapData { Flap = flap });

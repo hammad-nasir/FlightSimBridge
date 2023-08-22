@@ -31,7 +31,8 @@ namespace FlightSimBridge
             //})
             //.WithAutomaticReconnect()
             //.Build();
-            var connectionUrl = $"http://localhost:5233/flightsimhub?access_token={jwtToken}";
+            //var connectionUrl = $"http://connectcockpit.com/flightsimhub?access_token={jwtToken}";
+            var connectionUrl = $"http://192.168.86.50:5233/flightsimhub?access_token={jwtToken}";
 
             connection = new HubConnectionBuilder()
                 .WithUrl(connectionUrl)
