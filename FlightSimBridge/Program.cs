@@ -11,11 +11,15 @@ namespace FlightSimBridge
 {
     internal static class Program
     {
-        private static string FlightSimWebAppUrl = "http://localhost:5233/";
+        private static string FlightSimWebAppUrl = "https://connectcockpit.com/";
 
         [STAThread]
         static async Task Main()
         {
+        //    System.Net.ServicePointManager.ServerCertificateValidationCallback +=
+        //(sender, cert, chain, sslPolicyErrors) => true;
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             // Authenticate the user and obtain the JWT token

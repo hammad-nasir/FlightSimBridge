@@ -20,19 +20,12 @@ namespace FlightSimBridge
         public SignalRHubClient(string hubUrl, string token)
         {
             string jwtToken = token.Trim('"');
-            Console.WriteLine($"Token received: {jwtToken}");
+            //Console.WriteLine($"Token received: {jwtToken}");
 
             simConnectClient = new SimConnectClient(this);
 
-            //connection = new HubConnectionBuilder()
-            //.WithUrl(hubUrl, options =>
-            //{
-            //    options.AccessTokenProvider = () => Task.FromResult(jwtToken);
-            //})
-            //.WithAutomaticReconnect()
-            //.Build();
-            //var connectionUrl = $"http://connectcockpit.com/flightsimhub?access_token={jwtToken}";
-            var connectionUrl = $"http://192.168.86.50:5233/flightsimhub?access_token={jwtToken}";
+            var connectionUrl = $"https://connectcockpit.com/flightsimhub?access_token={jwtToken}";
+            //var connectionUrl = $"http://192.168.86.50:5233/flightsimhub?access_token={jwtToken}";
 
             connection = new HubConnectionBuilder()
                 .WithUrl(connectionUrl)
@@ -41,7 +34,7 @@ namespace FlightSimBridge
 
             connection.On<double, double>("ReceiveThrottle", (throttle1, throttle2) =>
             {
-                Console.WriteLine($"Received Throttles on FlightSimBridge: {throttle1},  {throttle2}");
+                //Console.WriteLine($"Received Throttles on FlightSimBridge: {throttle1},  {throttle2}");
                 simConnectClient.SendThrottle(throttle1, throttle2);
 
             });
@@ -49,70 +42,70 @@ namespace FlightSimBridge
 
             connection.On<double>("ReceiveLeftBrake", (leftBrake) =>
             {
-                Console.WriteLine($"Received Brakes on FlightSimBridge: {leftBrake}");
+                //Console.WriteLine($"Received Brakes on FlightSimBridge: {leftBrake}");
                 simConnectClient.SendLeftBrake(leftBrake);
 
             });
 
             connection.On<double>("ReceiveRightBrake", (rightBrake) =>
             {
-                Console.WriteLine($"Received Brakes on FlightSimBridge: {rightBrake}");
+                //Console.WriteLine($"Received Brakes on FlightSimBridge: {rightBrake}");
                 simConnectClient.SendRightBrake(rightBrake);
 
             });
 
             connection.On<double>("ReceiveFlap", (flap) =>
             {
-                Console.WriteLine($"Received Flap on FlightSimBridge: {flap}");
+                //Console.WriteLine($"Received Flap on FlightSimBridge: {flap}");
                 simConnectClient.SendFlap(flap);
 
             });
 
             connection.On<double>("ReceivePitch", (pitch) =>
             {
-                Console.WriteLine($"Received Pitch on FlightSimBridge: {pitch}");
+                //Console.WriteLine($"Received Pitch on FlightSimBridge: {pitch}");
                 simConnectClient.SendPitch(pitch);
 
             });
 
             connection.On<double>("ReceiveBank", (bank) =>
             {
-                Console.WriteLine($"Received Pitch on FlightSimBridge: {bank}");
+                //Console.WriteLine($"Received Pitch on FlightSimBridge: {bank}");
                 simConnectClient.SendBank(bank);
 
             });
 
             connection.On<bool>("ReceiveAP", (ap) =>
             {
-                Console.WriteLine($"Received AP STATE: {ap}");
+                //Console.WriteLine($"Received AP STATE: {ap}");
                 simConnectClient.SetAutopilot(ap);
 
             });
 
             connection.On<double>("ReceiveTargetAltitude", (alt) =>
             {
-                Console.WriteLine($"Received Target Altitude on FlightSimBridge: {alt}");
+                //Console.WriteLine($"Received Target Altitude on FlightSimBridge: {alt}");
                 simConnectClient.SendTargetAltitude(alt);
 
             });
 
             connection.On<double>("ReceiveTargetSpeed", (spd) =>
             {
-                Console.WriteLine($"Received Target Speed on FlightSimBridge: {spd}");
+                //Console.WriteLine($"Received Target Speed on FlightSimBridge: {spd}");
                 simConnectClient.SendTargetSpeed(spd);
 
             });
 
             connection.On<double>("ReceiveTargetHeading", (hdg) =>
             {
-                Console.WriteLine($"Received Target Heading on FlightSimBridge: {hdg}");
+                //Console.WriteLine($"Received Target Heading on FlightSimBridge: {hdg}");
                 simConnectClient.SendTargetHeading(hdg);
 
             });
 
             connection.On<double>("ReceiveTargetVS", (vs) =>
             {
-                Console.WriteLine($"Received Target VS on FlightSimBridge: {vs}");
+                //Console.WriteLine($"Received Target VS on FlightSimBridge: {vs}");
                 simConnectClient.SendTargetVS(vs);
 
             });
@@ -120,7 +113,7 @@ namespace FlightSimBridge
 
             connection.On<bool>("ReceiveAltHold", (ap) =>
             {
-                Console.WriteLine($"Received ALT HOLD: {ap}");
+                //Console.WriteLine($"Received ALT HOLD: {ap}");
                 simConnectClient.SetAutopilotAltHold(ap);
 
             });
@@ -128,7 +121,7 @@ namespace FlightSimBridge
 
             connection.On<bool>("ReceiveSpdHold", (ap) =>
             {
-                Console.WriteLine($"Received SPEED HOLD: {ap}");
+                //Console.WriteLine($"Received SPEED HOLD: {ap}");
                 simConnectClient.SetAutopilotSpeedHold(ap);
 
             });
@@ -147,7 +140,7 @@ namespace FlightSimBridge
 
             connection.On<bool>("ReceiveHdgHold", (ap) =>
             {
-                Console.WriteLine($"Received HDG HOLD: {ap}");
+                //Console.WriteLine($"Received HDG HOLD: {ap}");
                 simConnectClient.SetAutopilotHdgHold(ap);
 
             });
@@ -187,7 +180,7 @@ namespace FlightSimBridge
                 {
                     // No need to send the connectionId since the JWT token is already in the request headers
                     await connection.SendAsync("SendAltitudeAndSpeed", altitude, latitude, longitude, speed, heading);
-                    Console.WriteLine($"Altitude sent to hub: {altitude}");
+                    //Console.WriteLine($"Altitude sent to hub: {altitude}");
 
                     Console.WriteLine("SignalR hub is connected.");
                 }

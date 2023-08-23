@@ -203,3 +203,7 @@ D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.
 D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.exe
 D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.pdb
 D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.LoginForm.resources
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.exe.manifest
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\bin\Debug\FlightSimBridge.application
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.exe.manifest
+D:\Dev\New Flight App\FlightSimBridge\FlightSimBridge\obj\Debug\FlightSimBridge.application

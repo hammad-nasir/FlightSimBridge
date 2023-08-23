@@ -23,7 +23,7 @@ namespace FlightSimBridge
             _token = token;
 
             // Initialize the SignalR client with the hub URL
-            signalRClient = new SignalRHubClient("http://localhost:5233/flightsimhub", _token);
+            signalRClient = new SignalRHubClient("https://connectcockpit.com/flightsimhub", _token);
 
             // Initialize the SimConnect client
             simConnectClient = new SimConnectClient(signalRClient);
@@ -59,7 +59,7 @@ namespace FlightSimBridge
 
         private void label2_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://localhost:5233");
+            System.Diagnostics.Process.Start("https://connectcockpit.com");
         }
     }
 }

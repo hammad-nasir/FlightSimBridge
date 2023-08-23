@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +16,7 @@ namespace FlightSimBridge
 {
     public partial class LoginForm : Form
     {
-        private static string FlightSimWebAppUrl = "http://localhost:5233/";
+        private static string FlightSimWebAppUrl = "https://connectcockpit.com/";
         public LoginForm()
         {
             InitializeComponent();
@@ -35,28 +37,34 @@ namespace FlightSimBridge
 
         private async void loginBtn_Click(object sender, EventArgs e)
         {
-            //remove the below 2 lines in prod
-            //emailTxt.Text = "h@hotmail.com";
-            //passwordTxt.Text = "hammad";
             string email = emailTxt.Text;
             string password = passwordTxt.Text;
             bool rememberMe = rememberMeChk.Checked;
 
-            var token = await AuthenticateUser(email, password);
-
-            if (token != null)
+            try
             {
-                SaveCredentialsIfRememberMeChecked(email, password, rememberMe);
+                var token = await AuthenticateUser(email, password);
+                if (token != null)
+                {
+                    SaveCredentialsIfRememberMeChecked(email, password, rememberMe);
 
-                this.Hide();
-                Form1 form1 = new Form1(token);
-                form1.Closed += (s, args) => this.Close();
-                form1.Show();
+                    this.Hide();
+                    Form1 form1 = new Form1(token);
+                    form1.Closed += (s, args) => this.Close();
+                    form1.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid email or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else
+
+            catch (HttpRequestException ex)
             {
-                MessageBox.Show("Invalid email or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine(ex.InnerException.Message);
             }
+
+
 
         }
 
@@ -85,6 +93,8 @@ namespace FlightSimBridge
         {
             using (var httpClient = new HttpClient())
             {
+                //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
                 httpClient.BaseAddress = new Uri(FlightSimWebAppUrl);
 
                 // Create a model to send the user's email and password for authentication
@@ -125,12 +135,12 @@ namespace FlightSimBridge
 
         private void button1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://localhost:5233/register");
+            System.Diagnostics.Process.Start("https://connectcockpit.com/register");
         }
 
         private void registerBtn_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://localhost:5233/register");
+            System.Diagnostics.Process.Start("https://connectcockpit.com/register");
         }
 
         private void button1_Click_1(object sender, EventArgs e)
